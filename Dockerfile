@@ -1,16 +1,23 @@
-# first stage, can't use alpine for building armv7
-FROM node:22 AS builder
+# Use alpine for both stages
+FROM node:22.12.0-alpine AS builder
 WORKDIR /app
 
-# copy all files
+# Install build dependencies
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+    apk add --no-cache python3 make g++
+
+# copy package files first for better caching
+COPY package*.json ./
+RUN npm ci
+
+# copy all other files
 COPY . .
 
-# install dependencies and build
-RUN npm install && \
-    npm run build
+# build
+RUN npm run build
 
 # second stage
-FROM node:22-alpine
+FROM node:22.12.0-alpine
 WORKDIR /app
 
 # copy necessary files
