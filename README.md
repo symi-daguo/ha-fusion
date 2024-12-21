@@ -4,11 +4,20 @@
 
 一个现代化、易用且高性能的 [Home Assistant](https://www.home-assistant.io/) 自定义仪表盘
 
-<https://www.youtube.com/watch?v=D8mWruSuPOM>
+## 预览
 
-[![预览](/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
+[![预览](https://raw.githubusercontent.com/symi-daguo/ha-fusion/main/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
 
-如果您觉得这个项目有用，请给我们的仓库点个 🌟！如果您非常喜欢，也可以考虑赞助我们！❤️
+如果您觉得这个项目有用，请给我们的仓库点个 ⭐！如果您非常喜欢，也可以考虑赞助我们！❤️
+
+## 特性
+
+- 🎨 现代化的设计风格
+- 📱 完全响应式布局
+- ⚡ 高性能渲染
+- 🔧 简单易用的配置
+- 🌍 中文优先支持
+- 🎯 针对 Home Assistant 优化
 
 ---
 
@@ -35,7 +44,7 @@
 
 ### 插件方式安装
 
-对于 "Operating System" 或 "Supervised" 安装方式，您可以将 ha-fusion ���为插件安装：
+对于 "Operating System" 或 "Supervised" 安装方式，您可以将 ha-fusion 作为插件安装：
 
 1. **添加仓库**：首先，将 ha-fusion 插件仓库添加到您的 Home Assistant 实例中。点击下方按钮或手动添加仓库 URL：<https://github.com/symi-daguo/addon-ha-fusion>
 
@@ -111,7 +120,7 @@ docker run -d \
 
 ### 视图
 
-要在页面加载时设置特定视图，添加 "view" 参数。例如，如果您有一个"卧室"视图，在 URL 后添加查询字符串 `?view=卧室`。
+要在页面加载时设置特定视图，添加 "view" 参数。例如，如果您有一个"卧室"视图，在 URL ��添加查询字符串 `?view=卧室`。
 
 ### 菜单
 
@@ -129,7 +138,7 @@ docker run -d \
 
 ## 调试
 
-要调试任何错误，如果您使用的是插件，请��看"日志"标签页；如果使用 Docker，请使用 `docker logs ha-fusion`。要检查前端问题，请打开浏览器的控制台。
+要调试任何错误，如果您使用的是插件，请查看"日志"标签页；如果使用 Docker，请使用 `docker logs ha-fusion`。要检查前端问题，请打开浏览器的控制台。
 
 ## 开发
 
