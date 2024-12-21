@@ -116,7 +116,7 @@
 					{$lang('update_up_to_date')} {installed}
 				{/if}
 
-				<a href="https://github.com/matt8707/ha-fusion/releases" target="_blank">
+				<a href="https://github.com/symi-daguo/ha-fusion/releases" target="_blank">
 					{$lang('update_release_notes')}
 				</a>
 			{:else if error_code}

@@ -1,1 +1,3 @@
-locale: en
+locale: zh-Hans
+addons:
+  youtube: false
