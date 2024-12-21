@@ -9,18 +9,18 @@
 	}[];
 
 	async function loadSelectedLang(value: string) {
-		$selectedLanguage = value;
+		$selectedLanguage = value || 'zh-Hans';
 
 		try {
 			const response = await fetch(`${base}/_api/get_translation`, {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ locale: value })
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ locale: value })
 			});
 
 			const data = await response.json();
 
-			document.documentElement.lang = $selectedLanguage || 'en';
+			document.documentElement.lang = $selectedLanguage || 'zh-Hans';
 
 			if (response.ok) {
 				$translation = data;

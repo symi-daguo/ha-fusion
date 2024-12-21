@@ -25,7 +25,19 @@ export const services = writable<HassServices>();
 export const connected = writable<boolean>();
 
 // user
-export const configuration = writable<Configuration>();
+export const configuration = writable<{
+	token?: string;
+	locale?: string;
+	motion?: boolean;
+	custom_js?: boolean;
+	addons?: {
+		youtube?: boolean;
+		maptiler?: {
+			apikey: string;
+		};
+	};
+	fullscreen?: boolean;
+}>();
 export const dashboard = writable<Dashboard>();
 export const customJs = writable<boolean | undefined>();
 

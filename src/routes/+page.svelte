@@ -120,6 +120,13 @@
 				console.error('Error during service worker unregistration:', error);
 			}
 		}
+
+		// 检查是否需要全屏显示
+		if ($configuration.fullscreen) {
+			document.documentElement.requestFullscreen().catch(err => {
+				console.error('Error attempting to enable fullscreen:', err);
+			});
+		}
 	});
 
 	/**
