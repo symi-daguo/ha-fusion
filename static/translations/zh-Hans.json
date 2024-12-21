@@ -261,5 +261,8 @@
 	"week": "\u5468",
 	"welcome_home": "\u6b22\u8fce\u56de\u5bb6",
 	"year": "\u5e74",
-	"yes": "\u662f"
+	"yes": "\u662f",
+	"screen_interface": "屏幕界面",
+	"plugin_interface": "插件界面",
+	"home_interface": "家庭界面"
 }

@@ -135,21 +135,30 @@
 		<form id="settings" name="settings" bind:this={formElement} on:submit|preventDefault>
 			<Language {languages} />
 
-			<h2>{$lang('screen')}</h2>
+			<h2>{$lang('screen_interface')}</h2>
 			<div class="button-container">
 				<button
 					class:selected={isFullscreen}
-					on:click={toggleFullscreen}
+					on:click={() => {
+						isFullscreen = true;
+						document.documentElement.requestFullscreen();
+						$configuration.fullscreen = true;
+					}}
 					use:Ripple={$ripple}
 				>
-					{$lang('yes')}
+					{$lang('plugin_interface')}
 				</button>
 				<button
 					class:selected={!isFullscreen}
-					on:click={toggleFullscreen}
+					on:click={() => {
+						isFullscreen = false;
+						document.exitFullscreen();
+						$configuration.fullscreen = false;
+						window.location.href = 'http://localhost:8123';
+					}}
 					use:Ripple={$ripple}
 				>
-					{$lang('no')}
+					{$lang('home_interface')}
 				</button>
 			</div>
 
