@@ -48,7 +48,7 @@
 		placeholder={$lang('language')}
 		value={$selectedLanguage}
 		on:change={(event) => {
-			loadSelectedLang(event?.detail || 'en');
+			loadSelectedLang(event?.detail || 'zh-Hans');
 		}}
 	/>
 {/if}

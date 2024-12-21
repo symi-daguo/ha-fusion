@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start HA Fusion service
+# ==============================================================================
+
+# Set environment variables
+export PORT=5050
+export NODE_ENV=production
+export ADDON=true
+
+cd /app
+exec node server.js 

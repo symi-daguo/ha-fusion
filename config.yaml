@@ -1,0 +1,29 @@
+name: "HA Fusion"
+version: "2024.12.1"
+slug: "ha-fusion"
+description: "A modern, easy-to-use and performant custom Home Assistant dashboard"
+url: "https://github.com/symi-daguo/addon-ha-fusion"
+arch:
+  - armhf
+  - armv7
+  - aarch64
+  - amd64
+  - i386
+init: false
+ingress: true
+ingress_port: 5050
+panel_icon: mdi:view-dashboard
+ports:
+  5050/tcp: 5050
+ports_description:
+  5050/tcp: "Web interface (Not required for Ingress)"
+options:
+  ssl: false
+  certfile: fullchain.pem
+  keyfile: privkey.pem
+schema:
+  ssl: bool
+  certfile: str
+  keyfile: str
+startup: application
+webui: http://[HOST]:[PORT:5050] 

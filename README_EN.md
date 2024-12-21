@@ -16,7 +16,7 @@ If you find this project useful, be sure to give our repository a ⭐! If you lo
 - 📱 Fully responsive layout
 - ⚡ High-performance rendering
 - 🔧 Simple and easy configuration
-- 🌍 Chinese-first support (Default Chinese interface)
+- 🌍 Chinese-first support (Default Simplified Chinese interface, no additional setup needed)
 - 🎯 Optimized for Home Assistant
 - 🖥️ Fullscreen mode support (Can be toggled in settings)
 
@@ -26,7 +26,7 @@ If you find this project useful, be sure to give our repository a ⭐! If you lo
 
 The project is currently in **pre-beta** stage. Basic functionality has been completed, including:
 
-- ✅ Chinese interface optimization
+- ✅ Chinese interface optimization (Defaults to Simplified Chinese, other languages can be selected in settings)
 - ✅ Fullscreen display support
 - ✅ Basic interface layout
 - ✅ Docker container support
