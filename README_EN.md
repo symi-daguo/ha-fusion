@@ -1,0 +1,176 @@
+# ha-fusion
+
+English | [简体中文](README.md)
+
+A modern, easy-to-use and performant custom [Home Assistant](https://www.home-assistant.io/) dashboard
+
+<https://www.youtube.com/watch?v=D8mWruSuPOM>
+
+[![preview](/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
+
+If you find this project useful, be sure to give our repository a 🌟! If you love it, please consider donating! ❤️
+
+---
+
+## 📣 Pre-beta
+
+The current state of this project is **pre-beta**. This means that there's basic functionality missing, incomplete features and unresolved issues. General feedback, bug reports and feature requests are welcome!
+
+---
+
+## Table of Contents
+
+- [Installation](#installation)
+  - [Add-on Installation](#add-on-installation)
+  - [Docker Installation](#docker-installation)
+- [Configuration](#configuration)
+- [URL Parameters](#url-parameters)
+- [Keyboard Shortcuts](#keyboard-shortcuts)
+- [Debug](#debug)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Installation
+
+### Add-on Installation
+
+For "Operating System" or "Supervised" installation methods, you can install ha-fusion as an add-on:
+
+1. **Add Repository**: First, add the ha-fusion add-on repository to your Home Assistant instance. Click the button below or manually add the repository URL: <https://github.com/symi-daguo/ha-fusion>
+
+   [![Open your Home Assistant instance and show the add add-on repository dialog](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsymi-daguo%2Fha-fusion)
+
+2. **Install Add-on**: After adding the repository, refresh the add-on store page. Locate ha-fusion in the list and proceed with the installation.
+
+### Docker Installation
+
+If you're using the "Container" or "Core" installation methods, ha-fusion can be installed via Docker:
+
+1. **Docker Compose File**: Place your edited copy of the [docker-compose.yml](https://github.com/symi-daguo/ha-fusion/blob/main/docker-compose.yml) file in a suitable directory.
+
+2. **Create Container**:
+   Run the following commands in your terminal to start the container:
+
+   ```bash
+   cd path/to/docker-compose.yml
+   docker-compose up -d ha-fusion
+   ```
+
+#### Update
+
+To update to the latest version of ha-fusion, run the following commands:
+
+```bash
+docker-compose pull ha-fusion
+docker-compose up -d ha-fusion
+```
+
+<details>
+<summary>
+   <b>Other Installation Methods</b>
+</summary>
+
+Without docker-compose, updating the container involves additional steps. For each update, it's necessary to first stop the current container, remove it, pull the new image, and then execute the docker run command again.
+
+```bash
+docker run -d \
+  --name ha-fusion \
+  --network bridge \
+  -p 5050:5050 \
+  -v /path/to/ha-fusion:/app/data \
+  -e TZ=Asia/Shanghai \
+  -e HASS_URL=http://homeassistant:8123 \
+  --restart always \
+  ghcr.io/symi-daguo/ha-fusion
+```
+
+#### Kubernetes
+
+If you prefer to use Kubernetes, see [Chart README.md](https://github.com/symi-daguo/ha-fusion/tree/main/charts/ha-fusion)
+
+</details>
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Description | Default Value | Example |
+|----------|-------------|---------------|---------|
+| TZ | Timezone setting | Asia/Shanghai | Asia/Shanghai |
+| HASS_URL | Home Assistant access URL | http://homeassistant:8123 | http://192.168.1.100:8123 |
+| PORT | ha-fusion service port | 5050 | 5050 |
+
+### Data Persistence
+
+The data directory `/app/data` is used to store configuration files and other persistent data. It's recommended to map this directory to the host for data persistence.
+
+## URL Parameters
+
+These features will only function if you have exposed a port in the add-on configuration or by using Docker. Note that when using Ingress, query strings cannot be read.
+
+### View
+
+To set a particular view when the page loads, add the "view" parameter. For example, if you have a "Bedroom" view, append the query string `?view=Bedroom` to the URL.
+
+### Menu
+
+To disable the menu button, append the query string `?menu=false` to the URL. This is useful when you want to avoid unwanted changes to your dashboard, such as on wall-mounted tablets.
+
+## Keyboard Shortcuts
+
+| Key                 | Description |
+| ------------------- | ----------- |
+| **f**               | filter      |
+| **esc**             | exit        |
+| **cmd + s**         | save        |
+| **cmd + z**         | undo        |
+| **cmd + shift + z** | redo        |
+
+## Debug
+
+To debug any errors, check the "Log" tab if you're using the addon, or use `docker logs ha-fusion` for Docker setups. To inspect frontend issues, open the browser's console.
+
+## Development
+
+To begin contributing to the project, you'll first need to install node. It's also recommended to install pnpm. If you're unfamiliar with Svelte, consider doing the tutorial at <https://learn.svelte.dev>
+
+```bash
+# prerequisites (macos)
+brew install node pnpm
+
+# install
+git clone https://github.com/symi-daguo/ha-fusion.git
+cd ha-fusion
+pnpm install
+
+# environment
+cp .env.example .env
+code .env
+
+# server
+npm run dev -- --open
+
+# dependencies
+pnpm outdated
+pnpm update
+
+# lint
+npm run check
+npm run lint
+npm run format
+```
+
+## Contributing
+
+We welcome your contributions! Whether it's fixing bugs, adding new features, or improving documentation, your help will make the project better.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details 

@@ -1,5 +1,7 @@
 # ha-fusion
 
+[English](README_EN.md) | 简体中文
+
 一个现代化、易用且高性能的 [Home Assistant](https://www.home-assistant.io/) 自定义仪表盘
 
 <https://www.youtube.com/watch?v=D8mWruSuPOM>
@@ -16,6 +18,19 @@
 
 ---
 
+## 目录
+
+- [安装说明](#安装说明)
+  - [插件方式安装](#插件方式安装)
+  - [Docker 安装](#docker-安装)
+- [配置说明](#配置说明)
+- [URL 参数说明](#url-参数说明)
+- [键盘快捷键](#键盘快捷键)
+- [调试](#调试)
+- [开发](#开发)
+- [贡献指南](#贡献指南)
+- [许可证](#许可证)
+
 ## 安装说明
 
 ### 插件方式安装
@@ -27,8 +42,6 @@
    [![在您的 Home Assistant 实例中打开并显示添加插件仓库对话框](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsymi-daguo%2Fha-fusion)
 
 2. **安装插件**：添加仓库后，刷新插件商店页面。在列表中找到 ha-fusion 并进行安装。
-
----
 
 ### Docker 安装
 
@@ -67,7 +80,7 @@ docker run -d \
   -p 5050:5050 \
   -v /path/to/ha-fusion:/app/data \
   -e TZ=Asia/Shanghai \
-  -e HASS_URL=http://192.168.1.241:8123 \
+  -e HASS_URL=http://homeassistant:8123 \
   --restart always \
   ghcr.io/symi-daguo/ha-fusion
 ```
@@ -78,7 +91,19 @@ docker run -d \
 
 </details>
 
----
+## 配置说明
+
+### 环境变量
+
+| 变量名 | 说明 | 默认值 | 示例 |
+|--------|------|--------|-------|
+| TZ | 时区设置 | Asia/Shanghai | Asia/Shanghai |
+| HASS_URL | Home Assistant 的访问地址 | http://homeassistant:8123 | http://192.168.1.100:8123 |
+| PORT | ha-fusion 服务端口 | 5050 | 5050 |
+
+### 数据持久化
+
+数据目录 `/app/data` 用于存储配置文件和其他持久化数据。建议将此目录映射到主机以保持数据持久化。
 
 ## URL 参数说明
 
@@ -92,8 +117,6 @@ docker run -d \
 
 要禁用菜单按钮，在 URL 后添加查询字符串 `?menu=false`。这在您想避免仪表盘被意外更改时很有用，比如在壁挂式平板电脑上。
 
----
-
 ## 键盘快捷键
 
 | 按键                | 描述     |
@@ -104,13 +127,9 @@ docker run -d \
 | **cmd + z**         | 撤销     |
 | **cmd + shift + z** | 重做     |
 
----
-
 ## 调试
 
 要调试任何错误，如果您使用的是插件，请查看"日志"标签页；如果使用 Docker，请使用 `docker logs ha-fusion`。要检查前端问题，请打开浏览器的控制台。
-
----
 
 ## 开发
 
@@ -141,3 +160,17 @@ npm run check
 npm run lint
 npm run format
 ```
+
+## 贡献指南
+
+我们非常欢迎您的贡献！无论是修复错误、添加新功能，还是改进文档，您的帮助都将使项目变得更好。
+
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m '添加一些特性'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启一个 Pull Request
+
+## 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
