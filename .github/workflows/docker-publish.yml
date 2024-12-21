@@ -2,10 +2,20 @@ name: Docker Build and Publish
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ 'v*.*.*' ]
+    branches:
+      - "main"
+    paths:
+      - "Dockerfile"
+      - ".github/workflows/docker-publish.yml"
+      - "package.json"
+      - "src/**"
+      - "static/**"
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "main"
+  release:
+    types:
+      - published
 
 env:
   REGISTRY: ghcr.io
@@ -42,6 +52,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=
