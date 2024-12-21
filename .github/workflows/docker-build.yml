@@ -51,6 +51,14 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha
 
+      - name: Make package public
+        run: |
+          curl -X PATCH \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/orgs/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/visibility \
+            -d '{"visibility":"public"}'
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
