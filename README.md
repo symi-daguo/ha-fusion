@@ -35,13 +35,13 @@
 
 ### 插件方式安装
 
-对于 "Operating System" 或 "Supervised" 安装方式，您可以将 ha-fusion 作为插件安装：
+对于 "Operating System" 或 "Supervised" 安装方式，您可以将 ha-fusion ���为插件安装：
 
-1. **添加仓库**：首先，将 ha-fusion 插件仓库添加到您的 Home Assistant 实例中。点击下方按钮或手动添加仓库 URL：<https://github.com/symi-daguo/ha-fusion>
+1. **添加仓库**：首先，将 ha-fusion 插件仓库添加到您的 Home Assistant 实例中。点击下方按钮或手动添加仓库 URL：<https://github.com/symi-daguo/addon-ha-fusion>
 
-   [![在您的 Home Assistant 实例中打开并显示添加插件仓库对话框](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsymi-daguo%2Fha-fusion)
+   [![在您的 Home Assistant 实例中打开并显示添加插件仓库对话框](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fsymi-daguo%2Faddon-ha-fusion)
 
-2. **安装插件**：添加仓库后，刷新插件商店页面。在列表中找到 ha-fusion 并进行安装。
+2. **安装插件**：添加仓库后，刷新插件商店页面。在列表中找到 "Fusion" 并安装。
 
 ### Docker 安装
 
@@ -129,7 +129,7 @@ docker run -d \
 
 ## 调试
 
-要调试任何错误，如果您使用的是插件，请查看"日志"标签页；如果使用 Docker，请使用 `docker logs ha-fusion`。要检查前端问题，请打开浏览器的控制台。
+要调试任何错误，如果您使用的是插件，请��看"日志"标签页；如果使用 Docker，请使用 `docker logs ha-fusion`。要检查前端问题，请打开浏览器的控制台。
 
 ## 开发
 
