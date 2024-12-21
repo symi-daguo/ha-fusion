@@ -4,17 +4,35 @@ English | [简体中文](README.md)
 
 A modern, easy-to-use and performant custom [Home Assistant](https://www.home-assistant.io/) dashboard
 
-<https://www.youtube.com/watch?v=D8mWruSuPOM>
+## Preview
 
-[![preview](/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
+[![preview](https://raw.githubusercontent.com/symi-daguo/ha-fusion/main/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
 
-If you find this project useful, be sure to give our repository a 🌟! If you love it, please consider donating! ❤️
+If you find this project useful, be sure to give our repository a ⭐! If you love it, please consider donating! ❤️
+
+## Features
+
+- 🎨 Modern design style
+- 📱 Fully responsive layout
+- ⚡ High-performance rendering
+- 🔧 Simple and easy configuration
+- 🌍 Chinese-first support (Default Chinese interface)
+- 🎯 Optimized for Home Assistant
+- 🖥️ Fullscreen mode support (Can be toggled in settings)
 
 ---
 
 ## 📣 Pre-beta
 
-The current state of this project is **pre-beta**. This means that there's basic functionality missing, incomplete features and unresolved issues. General feedback, bug reports and feature requests are welcome!
+The project is currently in **pre-beta** stage. Basic functionality has been completed, including:
+
+- ✅ Chinese interface optimization
+- ✅ Fullscreen display support
+- ✅ Basic interface layout
+- ✅ Docker container support
+- ✅ Home Assistant add-on support
+
+We are continuously improving and adding new features. General feedback, bug reports and feature requests are welcome!
 
 ---
 
