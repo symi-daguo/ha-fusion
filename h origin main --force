@@ -1,0 +1,3 @@
+[33m00d15e7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m chore: 优化构建配置和文档链接
+[33m8997c87[m[33m ([m[1;33mtag: [m[1;33mv2024.12.0[m[33m)[m feat: 优化界面中文显示和交互体验
+[33mf908552[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix: optimize GitHub Actions workflow triggers to avoid duplicate runs

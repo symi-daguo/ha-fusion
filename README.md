@@ -63,25 +63,64 @@
 
 ### Docker 安装
 
-如果您使用的是 "Container" 或 "Core" 安装方式，可以通过 Docker 安装 ha-fusion：
+您可以使用以下方式通过 Docker 安装 ha-fusion：
 
-1. **Docker Compose 文件**：将修改后的 [docker-compose.yml](https://github.com/symi-daguo/ha-fusion/blob/main/docker-compose.yml) 文件放置在合适的目录中。
+1. **使用 Docker Compose**
 
-2. **创建容器**：
-   在终端中运行以下命令启动容器：
+创建 `docker-compose.yml` 文件：
 
-   ```bash
-   cd path/to/docker-compose.yml
-   docker-compose up -d ha-fusion
-   ```
+```yaml
+version: '3'
+services:
+  ha-fusion:
+    image: ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+    container_name: ha-fusion
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - HASS_URL=http://localhost:8123
+    restart: always
+```
 
-#### 更新
+然后运行：
+```bash
+docker-compose up -d
+```
 
-要更新到最新版本的 ha-fusion，运行以下命令：
+2. **使用 Docker 命令行**
 
 ```bash
+docker run -d \
+  --name ha-fusion \
+  -p 5050:5050 \
+  -v /path/to/data:/app/data \
+  -e HASS_URL=http://localhost:8123 \
+  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+```
+
+### 更新
+
+要更新到最新版本，可以使用以下命令：
+
+1. **使用 Docker Compose**
+```bash
 docker-compose pull ha-fusion
-docker-compose up -d ha-fusion
+docker-compose up -d
+```
+
+2. **使用 Docker 命令行**
+```bash
+docker pull ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+docker stop ha-fusion
+docker rm ha-fusion
+docker run -d \
+  --name ha-fusion \
+  -p 5050:5050 \
+  -v /path/to/data:/app/data \
+  -e HASS_URL=http://localhost:8123 \
+  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
 ```
 
 <details>
@@ -129,7 +168,7 @@ docker run -d \
 
 ### 视图
 
-要在页面加载时设置特定视图，添加 "view" 参数。例如，如果您有一个"卧室"视图，在 URL 后添加查询字符串 `?view=卧室`。
+要在页面加载时设置特定视图，添加 "view" 参数���例如，如果您有一个"卧室"视图，在 URL 后添加查询字符串 `?view=卧室`。
 
 ### 菜单
 

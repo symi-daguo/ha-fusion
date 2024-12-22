@@ -63,25 +63,64 @@ For "Operating System" or "Supervised" installation methods, you can install ha-
 
 ### Docker Installation
 
-If you're using the "Container" or "Core" installation methods, ha-fusion can be installed via Docker:
+You can install ha-fusion via Docker using the following methods:
 
-1. **Docker Compose File**: Place your edited copy of the [docker-compose.yml](https://github.com/symi-daguo/ha-fusion/blob/main/docker-compose.yml) file in a suitable directory.
+1. **Using Docker Compose**
 
-2. **Create Container**:
-   Run the following commands in your terminal to start the container:
+Create a `docker-compose.yml` file:
 
-   ```bash
-   cd path/to/docker-compose.yml
-   docker-compose up -d ha-fusion
-   ```
+```yaml
+version: '3'
+services:
+  ha-fusion:
+    image: ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+    container_name: ha-fusion
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - HASS_URL=http://localhost:8123
+    restart: always
+```
 
-#### Update
+Then run:
+```bash
+docker-compose up -d
+```
 
-To update to the latest version of ha-fusion, run the following commands:
+2. **Using Docker Command Line**
 
 ```bash
+docker run -d \
+  --name ha-fusion \
+  -p 5050:5050 \
+  -v /path/to/data:/app/data \
+  -e HASS_URL=http://localhost:8123 \
+  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+```
+
+### Update
+
+To update to the latest version, you can use the following commands:
+
+1. **Using Docker Compose**
+```bash
 docker-compose pull ha-fusion
-docker-compose up -d ha-fusion
+docker-compose up -d
+```
+
+2. **Using Docker Command Line**
+```bash
+docker pull ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+docker stop ha-fusion
+docker rm ha-fusion
+docker run -d \
+  --name ha-fusion \
+  -p 5050:5050 \
+  -v /path/to/data:/app/data \
+  -e HASS_URL=http://localhost:8123 \
+  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
 ```
 
 <details>
