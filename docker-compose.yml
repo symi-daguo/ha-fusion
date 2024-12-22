@@ -10,5 +10,5 @@ services:
       - ./data:/app/data
     environment:
       - TZ=Asia/Shanghai
-      - HASS_URL=http://homeassistant:8123
+      - HASS_URL=http://localhost:8123
     restart: always

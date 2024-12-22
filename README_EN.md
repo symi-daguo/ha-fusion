@@ -73,7 +73,7 @@ Create a `docker-compose.yml` file:
 version: '3'
 services:
   ha-fusion:
-    image: ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+    image: ghcr.io/symi-daguo/ha-fusion:latest
     container_name: ha-fusion
     ports:
       - "5050:5050"
@@ -97,7 +97,7 @@ docker run -d \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
   -e HASS_URL=http://localhost:8123 \
-  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+  ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
 ### Update
@@ -112,7 +112,7 @@ docker-compose up -d
 
 2. **Using Docker Command Line**
 ```bash
-docker pull ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+docker pull ghcr.io/symi-daguo/ha-fusion:latest
 docker stop ha-fusion
 docker rm ha-fusion
 docker run -d \
@@ -120,7 +120,7 @@ docker run -d \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
   -e HASS_URL=http://localhost:8123 \
-  ghcr.io/symi-daguo/ha-fusion:v2024.12.0
+  ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
 <details>
