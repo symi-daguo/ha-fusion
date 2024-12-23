@@ -87,17 +87,25 @@ services:
 
 然后运行：
 ```bash
+# 创建数据目录
+mkdir -p data
+
+# 启动服务
 docker-compose up -d
 ```
 
 2. **使用 Docker 命令行**
 
 ```bash
+# 创建数据目录
+mkdir -p data
+
+# 运行容器
 docker run -d \
   --name ha-fusion \
   --network bridge \
   -p 5050:5050 \
-  -v /path/to/data:/app/data \
+  -v ${PWD}/data:/app/data \
   -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
   --restart always \
@@ -121,8 +129,9 @@ docker stop ha-fusion
 docker rm ha-fusion
 docker run -d \
   --name ha-fusion \
+  --network bridge \
   -p 5050:5050 \
-  -v /path/to/data:/app/data \
+  -v ${PWD}/data:/app/data \
   -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
   --restart always \
@@ -141,7 +150,7 @@ docker run -d \
   --name ha-fusion \
   --network bridge \
   -p 5050:5050 \
-  -v /path/to/data:/app/data \
+  -v ${PWD}/data:/app/data \
   -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
   --restart always \
@@ -196,7 +205,7 @@ docker run -d \
 
 ## 开发
 
-要开始���项目做贡献，您首先需要安装 node。同时建议安装 pnpm。如果您不熟悉 Svelte，建议在 <https://learn.svelte.dev> 完成教程。
+要开始项目做贡献，您首先需要安装 node。同时建议安装 pnpm。如果您不熟悉 Svelte，建议在 <https://learn.svelte.dev> 完成教程。
 
 ```bash
 # 前置条件 (macos)
