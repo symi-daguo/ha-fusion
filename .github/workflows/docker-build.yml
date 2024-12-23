@@ -6,9 +6,9 @@ env:
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 
@@ -42,6 +42,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+            type=semver,pattern={{version}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
