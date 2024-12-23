@@ -73,13 +73,14 @@
 version: '3'
 services:
   ha-fusion:
-    image: ghcr.io/symi-daguo/ha-fusion:latest
     container_name: ha-fusion
+    image: ghcr.io/symi-daguo/ha-fusion:latest
     ports:
       - "5050:5050"
     volumes:
       - ./data:/app/data
     environment:
+      - TZ=Asia/Shanghai
       - HASS_URL=http://localhost:8123
     restart: always
 ```
@@ -94,9 +95,12 @@ docker-compose up -d
 ```bash
 docker run -d \
   --name ha-fusion \
+  --network bridge \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
+  -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
+  --restart always \
   ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
@@ -119,7 +123,9 @@ docker run -d \
   --name ha-fusion \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
+  -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
+  --restart always \
   ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
@@ -135,11 +141,11 @@ docker run -d \
   --name ha-fusion \
   --network bridge \
   -p 5050:5050 \
-  -v /path/to/ha-fusion:/app/data \
+  -v /path/to/data:/app/data \
   -e TZ=Asia/Shanghai \
-  -e HASS_URL=http://homeassistant:8123 \
+  -e HASS_URL=http://localhost:8123 \
   --restart always \
-  ghcr.io/symi-daguo/ha-fusion
+  ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
 #### Kubernetes
@@ -155,7 +161,7 @@ docker run -d \
 | 变量名 | 说明 | 默认值 | 示例 |
 |--------|------|--------|-------|
 | TZ | 时区设置 | Asia/Shanghai | Asia/Shanghai |
-| HASS_URL | Home Assistant 的访问地址 | http://homeassistant:8123 | http://192.168.1.100:8123 |
+| HASS_URL | Home Assistant 的访问地址 | http://localhost:8123 | http://192.168.2.12:8123 |
 | PORT | ha-fusion 服务端口 | 5050 | 5050 |
 
 ### 数据持久化
@@ -190,7 +196,7 @@ docker run -d \
 
 ## 开发
 
-要开始为项目做贡献，您首先需要安装 node。同时建议安装 pnpm。如果您不熟悉 Svelte，建议在 <https://learn.svelte.dev> 完成教程。
+要开始���项目做贡献，您首先需要安装 node。同时建议安装 pnpm。如果您不熟悉 Svelte，建议在 <https://learn.svelte.dev> 完成教程。
 
 ```bash
 # 前置条件 (macos)

@@ -80,6 +80,7 @@ services:
     volumes:
       - ./data:/app/data
     environment:
+      - TZ=Asia/Shanghai
       - HASS_URL=http://localhost:8123
     restart: always
 ```
@@ -94,9 +95,12 @@ docker-compose up -d
 ```bash
 docker run -d \
   --name ha-fusion \
+  --network bridge \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
+  -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
+  --restart always \
   ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
@@ -117,9 +121,12 @@ docker stop ha-fusion
 docker rm ha-fusion
 docker run -d \
   --name ha-fusion \
+  --network bridge \
   -p 5050:5050 \
   -v /path/to/data:/app/data \
+  -e TZ=Asia/Shanghai \
   -e HASS_URL=http://localhost:8123 \
+  --restart always \
   ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
@@ -135,11 +142,11 @@ docker run -d \
   --name ha-fusion \
   --network bridge \
   -p 5050:5050 \
-  -v /path/to/ha-fusion:/app/data \
+  -v /path/to/data:/app/data \
   -e TZ=Asia/Shanghai \
-  -e HASS_URL=http://homeassistant:8123 \
+  -e HASS_URL=http://localhost:8123 \
   --restart always \
-  ghcr.io/symi-daguo/ha-fusion
+  ghcr.io/symi-daguo/ha-fusion:latest
 ```
 
 #### Kubernetes
@@ -155,7 +162,7 @@ If you prefer to use Kubernetes, see [Chart README.md](https://github.com/symi-d
 | Variable | Description | Default Value | Example |
 |----------|-------------|---------------|---------|
 | TZ | Timezone setting | Asia/Shanghai | Asia/Shanghai |
-| HASS_URL | Home Assistant access URL | http://homeassistant:8123 | http://192.168.1.100:8123 |
+| HASS_URL | Home Assistant access URL | http://localhost:8123 | http://192.168.2.12:8123 |
 | PORT | ha-fusion service port | 5050 | 5050 |
 
 ### Data Persistence
