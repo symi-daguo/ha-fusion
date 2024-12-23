@@ -26,7 +26,7 @@ views:
                 id: 4795962599238
                 name: Hörnlampa
               - type: button
-                entity_id: media_player.sony_bravia_tv
+                entity_id: automation.hui_jia_kai_deng
                 id: 7351468287678
               - type: button
                 id: 3728122340522

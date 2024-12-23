@@ -2,14 +2,23 @@
 	import { openModal, closeModal } from 'svelte-modals';
 	import Ripple from 'svelte-ripple';
 	import { lang, ripple } from '$lib/Stores';
+	import { base } from '$app/paths';
 
 	function handleClick() {
-		openModal(() => import('$lib/Modal/ConfirmAlert.svelte'), {
-			title: $lang('log_out'),
-			message: $lang('confirm_log_out'),
-			confirm: async () => {
+		openModal(() => import('$lib/Modal/ReconnectModal.svelte'), {
+			confirm: async (hassUrl: string) => {
 				localStorage.removeItem('hassTokens');
-				location.reload();
+				
+				const redirectUri = encodeURIComponent(`${window.location.origin}${base}/auth/callback`);
+				const clientId = encodeURIComponent(`${window.location.origin}${base}/`);
+				const state = encodeURIComponent(JSON.stringify({
+					hassUrl,
+					return_to: `${window.location.origin}${base}/`
+				}));
+				
+				const authUrl = `${hassUrl}/auth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
+
+				window.location.href = authUrl;
 			},
 			cancel: () => {
 				closeModal();

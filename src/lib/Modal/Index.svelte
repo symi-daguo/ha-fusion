@@ -273,4 +273,24 @@
 	button:focus {
 		color: inherit;
 	}
+
+	.buttons {
+		display: flex;
+		justify-content: flex-end;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+
+	.action {
+		padding: 0.7rem 1.5rem;
+		border-radius: 0.5rem;
+		font-weight: 500;
+		width: auto;
+		min-width: 80px;
+	}
+
+	.save {
+		background-color: var(--primary-color);
+		color: white;
+	}
 </style>

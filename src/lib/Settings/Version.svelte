@@ -108,23 +108,7 @@
 <div>
 	<span>
 		<h2>Version</h2>
-		<p>
-			{#if installed && latest}
-				{#if compare(installed, latest) > 0}
-					{$lang('update_available')} {latest}
-				{:else}
-					{$lang('update_up_to_date')} {installed}
-				{/if}
-
-				<a href="https://github.com/symi-daguo/ha-fusion/releases" target="_blank">
-					{$lang('update_release_notes')}
-				</a>
-			{:else if error_code}
-				{$lang('error')}: {error_code}
-			{:else}
-				{$lang('loading')}
-			{/if}
-		</p>
+		<p>Up-to-date v2024.12.2 <a href="https://github.com/symi-daguo/ha-fusion/blob/main/CHANGELOG.md" target="_blank">阅读发行说明</a></p>
 	</span>
 
 	<button

@@ -16,13 +16,20 @@ import type {
 	HassServices
 } from 'home-assistant-js-websocket';
 import { getName } from './Utils';
+import {
+	createConnection,
+	createLongLivedTokenAuth,
+	subscribeEntities,
+	type Connection,
+	type HassEntities
+} from 'home-assistant-js-websocket';
 
 // hass
-export const connection = writable<Connection>();
+export const connection = writable<any | null>(null);
 export const config = writable<HassConfig>();
-export const states = writable<HassEntities>();
+export const states = writable<any>({});
 export const services = writable<HassServices>();
-export const connected = writable<boolean>();
+export const connected = writable(false);
 
 // user
 export const configuration = writable<{
@@ -151,13 +158,15 @@ export const timer = readable(new Date(), function start(set) {
 });
 
 // ripple
-export const ripple = readable({
-	color: 'rgba(255, 255, 255, 0.15)',
-	opacity: 0.5,
-	spreadingDuration: '300ms',
-	spreadingTimingFunction: 'ease-in-out',
-	clearingDuration: '350ms',
-	clearingTimingFunction: 'ease-in-out'
+export const ripple = writable({
+	color: 'rgba(255, 255, 255, 0.35)',
+	opacity: 0.35,
+	spreadingDuration: '400ms',
+	spreadingDelay: '0s',
+	spreadingTimingFunction: 'linear',
+	clearingDuration: '400ms',
+	clearingDelay: '0s',
+	clearingTimingFunction: 'linear'
 });
 
 // calendar
@@ -205,3 +214,34 @@ export const konvaStore = writable<KonvaStore>({
 	undoStack: [],
 	redoStack: []
 });
+
+// 初始化 HA 连接
+export async function initConnection() {
+	try {
+		const hassUrl = localStorage.getItem('hassUrl');
+		const tokens = localStorage.getItem('hassTokens');
+		
+		if (!hassUrl || !tokens) {
+			console.error('Missing HA URL or tokens');
+			return;
+		}
+
+		const { access_token } = JSON.parse(tokens);
+		const auth = createLongLivedTokenAuth(hassUrl, access_token);
+		const conn = await createConnection({ auth });
+		
+		// 保存连接实例
+		connection.set(conn);
+		connected.set(true);
+
+		// 订阅实体更新
+		subscribeEntities(conn, (ents) => {
+			states.set(ents);
+		});
+
+	} catch (err) {
+		console.error('Failed to connect to Home Assistant:', err);
+		connected.set(false);
+		connection.set(null);
+	}
+}

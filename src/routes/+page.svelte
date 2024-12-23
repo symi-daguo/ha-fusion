@@ -22,6 +22,8 @@
 	import { browser } from '$app/environment';
 	import { modals } from 'svelte-modals';
 	import Theme from '$lib/Components/Theme.svelte';
+	import { base } from '$app/paths';
+	import { initConnection } from '$lib/Stores';
 
 	/**
 	 * Data from server-side load
@@ -127,6 +129,22 @@
 				console.error('Error attempting to enable fullscreen:', err);
 			});
 		}
+
+		const hassUrl = localStorage.getItem('hassUrl');
+		const tokens = localStorage.getItem('hassTokens');
+
+		if (!hassUrl || !tokens) {
+			// 如果没有连接信息，重定向到登录页面
+			const clientId = `${window.location.origin}${base}/`;
+			const redirectUri = `${window.location.origin}${base}/auth/callback`;
+			const state = encodeURIComponent(JSON.stringify({ hassUrl: 'http://192.168.2.12:8123' }));
+
+			window.location.href = `http://192.168.2.12:8123/auth/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+			return;
+		}
+
+		// 尝试初始化连接
+		await initConnection();
 	});
 
 	/**
