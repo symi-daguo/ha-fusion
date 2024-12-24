@@ -215,27 +215,52 @@ export const konvaStore = writable<KonvaStore>({
 	redoStack: []
 });
 
+// HA 实例管理
+interface HAInstance {
+	url: string;
+	name: string;
+	tokens?: {
+		access_token: string;
+		refresh_token: string;
+		expires_in: number;
+		timestamp: number;
+	};
+}
+
+// 存储多个 HA 实例信息
+export const haInstances = writable<HAInstance[]>([]);
+export const currentInstance = writable<HAInstance | null>(null);
+
 // 初始化 HA 连接
 export async function initConnection() {
 	try {
-		const hassUrl = localStorage.getItem('hassUrl');
+		// 1. 获取 token
 		const tokens = localStorage.getItem('hassTokens');
-		
-		if (!hassUrl || !tokens) {
-			console.error('Missing HA URL or tokens');
+		if (!tokens) {
+			console.error('No access token found');
 			return;
 		}
 
 		const { access_token } = JSON.parse(tokens);
-		const auth = createLongLivedTokenAuth(hassUrl, access_token);
-		const conn = await createConnection({ auth });
 		
-		// 保存连接实例
+		// 2. 创建连接
+		const auth = createLongLivedTokenAuth(
+			window.location.origin,
+			access_token
+		);
+
+		const conn = await createConnection({ 
+			auth,
+			setupRetry: 10
+		});
+		
+		// 3. 更新状态
 		connection.set(conn);
 		connected.set(true);
 
-		// 订阅实体更新
+		// 4. 订阅实体更新
 		subscribeEntities(conn, (ents) => {
+			console.log('Received entities:', Object.keys(ents).length);
 			states.set(ents);
 		});
 
@@ -244,4 +269,29 @@ export async function initConnection() {
 		connected.set(false);
 		connection.set(null);
 	}
+}
+
+// 添加实例管理函数
+export function addHAInstance(instance: HAInstance) {
+	haInstances.update(instances => {
+		const newInstances = [...instances];
+		const existingIndex = newInstances.findIndex(i => i.url === instance.url);
+		if (existingIndex >= 0) {
+			newInstances[existingIndex] = instance;
+		} else {
+			newInstances.push(instance);
+		}
+		localStorage.setItem('haInstances', JSON.stringify(newInstances));
+		return newInstances;
+	});
+}
+
+export function switchHAInstance(url: string) {
+	haInstances.subscribe(instances => {
+		const instance = instances.find(i => i.url === url);
+		if (instance) {
+			localStorage.setItem('currentInstanceId', url);
+			initConnection(instance);
+		}
+	});
 }

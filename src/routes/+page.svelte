@@ -130,16 +130,17 @@
 			});
 		}
 
-		const hassUrl = localStorage.getItem('hassUrl');
+		// 检查是否有访问令牌
 		const tokens = localStorage.getItem('hassTokens');
-
-		if (!hassUrl || !tokens) {
-			// 如果没有连接信息，重定向到登录页面
+		if (!tokens) {
+			// 如果没有令牌，重定向到登录页面
 			const clientId = `${window.location.origin}${base}/`;
 			const redirectUri = `${window.location.origin}${base}/auth/callback`;
-			const state = encodeURIComponent(JSON.stringify({ hassUrl: 'http://192.168.2.12:8123' }));
+			const state = encodeURIComponent(JSON.stringify({ 
+				return_to: window.location.pathname
+			}));
 
-			window.location.href = `http://192.168.2.12:8123/auth/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
+			window.location.href = `/auth/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
 			return;
 		}
 

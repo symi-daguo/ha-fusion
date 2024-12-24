@@ -64,12 +64,13 @@ export default defineConfig({
 		host: true,
 		// development proxy endpoints
 		proxy: {
-			'/local/': {
-				target: process.env.HASS_URL,
-				changeOrigin: true
+			'/api': {
+				target: 'http://localhost:8123',
+				changeOrigin: true,
+				ws: true
 			},
-			'/api/': {
-				target: process.env.HASS_URL,
+			'/auth': {
+				target: 'http://localhost:8123',
 				changeOrigin: true
 			}
 		}

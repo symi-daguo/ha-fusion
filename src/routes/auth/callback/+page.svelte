@@ -3,9 +3,9 @@
 	import { base } from '$app/paths';
 	import { initConnection } from '$lib/Stores';
 
-	async function getAccessToken(hassUrl: string, code: string, clientId: string, redirectUri: string) {
+	async function getAccessToken(code: string, clientId: string, redirectUri: string) {
 		try {
-			const response = await fetch(`${hassUrl}/auth/token`, {
+			const response = await fetch(`/auth/token`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
@@ -22,8 +22,7 @@
 				throw new Error('Failed to get access token');
 			}
 
-			const data = await response.json();
-			return data;
+			return await response.json();
 		} catch (error) {
 			console.error('Error getting access token:', error);
 			throw error;
@@ -38,39 +37,30 @@
 		if (code && state) {
 			try {
 				const stateData = JSON.parse(decodeURIComponent(state));
-				const { hassUrl, return_to } = stateData;
+				const { return_to = '/' } = stateData;
 
-				if (hassUrl) {
-					localStorage.setItem('hassUrl', hassUrl);
-					
-					// 获取访问令牌
-					const redirectUri = `${window.location.origin}${base}/auth/callback`;
-					const clientId = `${window.location.origin}${base}/`;
-					
-					const tokenData = await getAccessToken(hassUrl, code, clientId, redirectUri);
-					
-					// 保存令牌信息
-					localStorage.setItem('hassTokens', JSON.stringify({
-						access_token: tokenData.access_token,
-						expires_in: tokenData.expires_in,
-						refresh_token: tokenData.refresh_token,
-						token_type: tokenData.token_type,
-						timestamp: Date.now()
-					}));
+				// 获取访问令牌
+				const redirectUri = `${window.location.origin}${base}/auth/callback`;
+				const clientId = `${window.location.origin}${base}/`;
+				
+				const tokenData = await getAccessToken(code, clientId, redirectUri);
+				
+				// 保存令牌信息
+				localStorage.setItem('hassTokens', JSON.stringify({
+					access_token: tokenData.access_token,
+					expires_in: tokenData.expires_in,
+					refresh_token: tokenData.refresh_token,
+					token_type: tokenData.token_type,
+					timestamp: Date.now()
+				}));
 
-					// 初始化 WebSocket 连接
-					await initConnection();
+				// 初始化连接
+				await initConnection();
 
-					// 重定向回插件页面
-					window.location.href = `${base}/`;
-				} else {
-					console.error('No hassUrl in state');
-					window.location.href = `${base}/`;
-				}
+				// 重定向回原页面
+				window.location.href = `${base}${return_to}`;
 			} catch (e) {
 				console.error('Failed to process authentication:', e);
-				
-				// 如果认证失败，重定向回插件页面
 				window.location.href = `${base}/`;
 			}
 		} else {
