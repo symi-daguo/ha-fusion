@@ -101,6 +101,7 @@ export function getTogglableService(entity: HassEntity) {
 		case 'script':
 		case 'siren':
 		case 'switch':
+		case 'climate':
 			service = 'toggle';
 			break;
 

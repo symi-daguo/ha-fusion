@@ -6,7 +6,12 @@ import { fastDimension } from 'svelte-fast-dimension';
 const config = {
 	preprocess: [vitePreprocess(), fastDimension()],
 	kit: {
-		adapter: adapter()
+		adapter: adapter({
+			out: 'build',
+			precompress: false,
+			envPrefix: '',
+			polyfill: true
+		})
 	},
 	typescript: {
 		config(config) {
@@ -15,10 +20,10 @@ const config = {
 	},
 	vitePlugin: {
 		// dev inspector
-		inspector: {
-			toggleKeyCombo: 'control-shift',
-			showToggleButton: 'never'
-		}
+			inspector: {
+				toggleKeyCombo: 'control-shift',
+				showToggleButton: 'never'
+			}
 	}
 };
 

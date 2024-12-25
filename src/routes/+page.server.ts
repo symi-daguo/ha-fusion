@@ -1,69 +1,80 @@
 import { readFile } from 'fs/promises';
 import { dev } from '$app/environment';
 import yaml from 'js-yaml';
-import type { Configuration, Dashboard, Translations } from '$lib/Types';
-import dotenv from 'dotenv';
+import type { PageServerLoad } from './$types';
 
-dotenv.config();
-
-/**
- * Loads a yaml/json file and returns parsed data
- */
-async function loadFile(file: string) {
-	try {
-		const data = await readFile(file, 'utf8');
-		if (!data.trim()) {
-			return {}; // file is empty, early return object
-		} else {
-			return file.endsWith('.yaml') ? yaml.load(data) : JSON.parse(data);
-		}
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException)?.code === 'ENOENT') {
-			// console.error(`No existing file found for ${file}`);
-		} else {
-			console.error(`Error reading or parsing ${file}:`, error);
-		}
-		return {};
-	}
-}
-
-/**
- * Server load function
- */
-export async function load({ request }): Promise<{
-	configuration: Configuration;
-	dashboard: Dashboard;
-	theme: any;
-	translations: Translations;
-}> {
-	// must be loaded first
-	const [configuration, dashboard] = await Promise.all([
-		loadFile('./data/configuration.yaml'),
-		loadFile('./data/dashboard.yaml')
-	]);
-
-	// hassUrl from env or server.js
-	configuration.hassUrl = process.env.HASS_URL || request.headers.get('X-Proxy-Target');
-
-	// initialize keys if missing
-	dashboard.views = dashboard.views || [];
-	dashboard.sidebar = dashboard.sidebar || [];
-
-	const dir = dev ? './static' : './build/client';
-
-	// load theme and locale
-	const [theme, en, locale] = await Promise.all([
-		loadFile(`${dir}/themes/${dashboard.theme || 'godis'}.yaml`),
-		loadFile(`${dir}/translations/en.json`),
-		configuration?.locale && configuration.locale !== 'en'
-			? loadFile(`${dir}/translations/${configuration.locale}.json`)
-			: undefined
-	]);
-
-	return {
-		configuration,
-		dashboard,
-		theme,
-		translations: locale ? { ...locale, _default: en } : en
+interface Configuration {
+	locale?: string;
+	hassUrl?: string;
+	token?: string;
+	custom_js?: boolean;
+	motion?: boolean;
+	addons?: {
+		youtube?: boolean;
+		maptiler?: {
+			apikey: string;
+		};
 	};
 }
+
+interface Dashboard {
+	views: any[];
+	theme?: string;
+	sidebar?: any[];
+	hide_views?: boolean;
+	hide_sidebar?: boolean;
+	sidebarWidth?: number;
+}
+
+export const load: PageServerLoad = async () => {
+	try {
+		// 加载配置
+		const configFile = await readFile('./data/configuration.yaml', 'utf8');
+		const configuration = yaml.load(configFile) as Configuration;
+
+		// 加载仪表板
+		const dashboardFile = await readFile('./data/dashboard.yaml', 'utf8');
+		const dashboard = yaml.load(dashboardFile) as Dashboard;
+
+		// 确定翻译文件目录
+		const translationsDir = dev ? './static/translations' : './build/client/translations';
+
+		// 加载英文翻译作为基础
+		const enTranslationFile = await readFile(`${translationsDir}/en.json`, 'utf8');
+		const enTranslations = JSON.parse(enTranslationFile);
+
+		// 如果有其他语言设置，加载对应的翻译
+		let translations = enTranslations;
+		if (configuration?.locale && configuration.locale !== 'en') {
+			try {
+				const localeTranslationFile = await readFile(`${translationsDir}/${configuration.locale}.json`, 'utf8');
+				const localeTranslations = JSON.parse(localeTranslationFile);
+				translations = { ...localeTranslations, _default: enTranslations };
+			} catch (error) {
+				console.warn(`Failed to load translation for ${configuration.locale}, falling back to English:`, error);
+			}
+		}
+
+		// 加载主题
+		let theme;
+		if (dashboard?.theme) {
+			const themeFile = await readFile(`${dev ? './static' : './build/client'}/themes/${dashboard.theme}.yaml`, 'utf8');
+			theme = yaml.load(themeFile);
+		}
+
+		return {
+			configuration,
+			dashboard,
+			translations,
+			theme
+		};
+	} catch (error) {
+		console.error('Failed to load initial data:', error);
+		return {
+			configuration: {} as Configuration,
+			dashboard: { views: [] } as Dashboard,
+			translations: {},
+			theme: {}
+		};
+	}
+};

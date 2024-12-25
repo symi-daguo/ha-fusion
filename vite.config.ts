@@ -64,13 +64,17 @@ export default defineConfig({
 		host: true,
 		// development proxy endpoints
 		proxy: {
-			'/local/': {
-				target: process.env.HASS_URL,
-				changeOrigin: true
+			'/auth': {
+				target: process.env.HASS_URL || 'http://192.168.2.12:8123',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/auth/, '/auth')
 			},
-			'/api/': {
-				target: process.env.HASS_URL,
-				changeOrigin: true
+			'/api': {
+				target: process.env.HASS_URL || 'http://192.168.2.12:8123',
+				changeOrigin: true,
+				ws: true,
+				secure: false
 			}
 		}
 	}

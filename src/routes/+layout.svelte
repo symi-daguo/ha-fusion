@@ -5,6 +5,17 @@
 	import Loader from '$lib/Components/Loader.svelte';
 	import '@fontsource-variable/inter';
 	import { expoOut } from 'svelte/easing';
+	import { onMount } from 'svelte';
+	import { configuration } from '$lib/Stores';
+
+	onMount(() => {
+		// 检查是否需要全屏显示
+		if ($configuration.fullscreen) {
+			document.documentElement.requestFullscreen().catch(err => {
+				console.error('Error attempting to enable fullscreen:', err);
+			});
+		}
+	});
 </script>
 
 <svelte:head>

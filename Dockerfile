@@ -7,8 +7,8 @@ COPY . .
 
 # install, build and prune
 RUN npm install --verbose && \
-  npm run build && \
-  npm prune --omit=dev
+    npm run build && \
+    npm prune --omit=dev
 
 # second stage
 FROM node:22-alpine
@@ -22,8 +22,8 @@ COPY --from=builder /app/package.json .
 
 # set environment
 ENV PORT=5050 \
-  NODE_ENV=production \
-  ADDON=false
+    NODE_ENV=production \
+    ADDON=false
 
 EXPOSE 5050
 CMD ["node", "server.js"]

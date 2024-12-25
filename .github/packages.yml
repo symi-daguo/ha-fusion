@@ -1,0 +1,9 @@
+name: ha-fusion
+description: A modern, easy-to-use and performant custom Home Assistant dashboard
+type: container
+visibility: public
+versions:
+  - version: v2024.12.0
+    platforms:
+      - linux/amd64
+    description: First stable release with improved Chinese UI and interaction experience 

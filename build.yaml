@@ -1,0 +1,6 @@
+build_from:
+  aarch64: docker.io/panwang/ha-fusion:latest
+  amd64: docker.io/panwang/ha-fusion:latest
+  armhf: docker.io/panwang/ha-fusion:latest
+  armv7: docker.io/panwang/ha-fusion:latest
+  i386: docker.io/panwang/ha-fusion:latest 

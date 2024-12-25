@@ -26,7 +26,7 @@ views:
                 id: 4795962599238
                 name: Hörnlampa
               - type: button
-                entity_id: media_player.sony_bravia_tv
+                entity_id: automation.hui_jia_kai_deng
                 id: 7351468287678
               - type: button
                 id: 3728122340522
@@ -245,12 +245,11 @@ sidebar:
     shortday: false
     shortmonth: false
     id: 2790676345913
-  - type: template
-    id: 1506524483596
-    template: <b>Vecka {{ now().strftime("%W") }}</b>
+  - id: 1506524483596
+    type: bar
+    entity_id: sensor.musicbox_mini_4x_battery_level
   - type: sensor
-    entity_id: sensor.template_greet
-    date: false
+    entity_id: sensor.lumi_cn_116835370_acn01_status_p_2_3
     id: 2790676343773
   - type: weather
     entity_id: weather.openweathermap
@@ -262,20 +261,19 @@ sidebar:
   - type: divider
     id: 6627143742873
   - type: sensor
-    entity_id: sensor.template_laundry
+    entity_id: sensor.mibx5_cn_844686291_v05_run_status_p_12_11
     id: 2790676343722
   - type: sensor
-    entity_id: sensor.template_vacuum
+    entity_id: sensor.mibx5_cn_844686291_v05_run_status_p_13_11
     id: 2790676343733
   - type: sensor
-    entity_id: sensor.template_mailbox
+    entity_id: sensor.xiaomi_cn_729009830_rd08_connected_device_number_p_2_3
     id: 2790676343744
-    date: false
   - type: sensor
-    entity_id: sensor.template_battery
+    entity_id: sensor.0x04cf8cdf3c752e2d_illuminance_lux
     id: 2790676343711
-  - type: navigate
-    id: 4055198699454
+  - id: 4055198699454
+    type: configure
   - type: timer
     entity_id: timer.test
     id: 5786160817081

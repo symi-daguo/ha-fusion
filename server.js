@@ -59,7 +59,7 @@ app.use(entryMiddleware, proxy);
 // let SvelteKit handle everything else, including serving prerendered pages and static assets
 app.use(handler);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
 	if (ADDON) {
 		console.log('ADDON:', ADDON);
 		console.log('INGRESS_PORT:', PORT);

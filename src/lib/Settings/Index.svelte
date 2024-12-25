@@ -15,6 +15,7 @@
 
 	export let data: any;
 	export let isOpen: boolean;
+	export let isFullscreen = true;
 
 	export let languages: {
 		id: string;
@@ -110,6 +111,19 @@
 			}
 		}
 	}
+
+	/**
+	 * Toggle fullscreen
+	 */
+	function toggleFullscreen() {
+		isFullscreen = !isFullscreen;
+		if (isFullscreen) {
+			document.documentElement.requestFullscreen();
+		} else {
+			document.exitFullscreen();
+		}
+		$configuration.fullscreen = isFullscreen;
+	}
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -121,7 +135,32 @@
 		<form id="settings" name="settings" bind:this={formElement} on:submit|preventDefault>
 			<Language {languages} />
 
-			<Token />
+			<h2>{$lang('screen_interface')}</h2>
+			<div class="button-container">
+				<button
+					class:selected={isFullscreen}
+					on:click={() => {
+						isFullscreen = true;
+						document.documentElement.requestFullscreen();
+						$configuration.fullscreen = true;
+					}}
+					use:Ripple={$ripple}
+				>
+					{$lang('plugin_interface')}
+				</button>
+				<button
+					class:selected={!isFullscreen}
+					on:click={() => {
+						isFullscreen = false;
+						document.exitFullscreen();
+						$configuration.fullscreen = false;
+						window.location.href = 'http://localhost:8123';
+					}}
+					use:Ripple={$ripple}
+				>
+					{$lang('home_interface')}
+				</button>
+			</div>
 
 			<Addons {data} />
 
@@ -196,5 +235,26 @@
 	.save-container {
 		display: flex;
 		align-items: center;
+	}
+
+	.button-container {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	button {
+		flex: 1;
+		border-radius: 0.4em;
+		border: none;
+		color: inherit;
+		padding: 0.55em 0.9em;
+		cursor: pointer;
+		font-family: inherit;
+		font-size: inherit;
+		background-color: var(--theme-button-background-color-off);
+	}
+
+	button.selected {
+		background-color: var(--theme-button-background-color-on);
 	}
 </style>
