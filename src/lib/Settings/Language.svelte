@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { translation, selectedLanguage, lang } from '$lib/Stores';
+	import { translation, selectedLanguage, lang, fullscreenEnabled } from '$lib/Stores';
 	import Select from '$lib/Components/Select.svelte';
 
 	export let languages: {
@@ -33,6 +33,11 @@
 	}
 
 	const href = 'https://www.home-assistant.io/docs/configuration/basic/#language';
+
+	// 监听全屏状态变化
+	document.addEventListener('fullscreenchange', () => {
+		$fullscreenEnabled = !!document.fullscreenElement;
+	});
 </script>
 
 <h2>{$lang('language')}</h2>

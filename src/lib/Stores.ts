@@ -193,3 +193,6 @@ export const konvaStore = writable<KonvaStore>({
 	undoStack: [],
 	redoStack: []
 });
+
+// fullscreen
+export const fullscreenEnabled = writable<boolean>(false);

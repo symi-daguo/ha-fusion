@@ -10,6 +10,7 @@ export interface Configuration {
 	motion?: boolean;
 	addons?: Addons;
 	token?: string;
+	fullscreen?: boolean;
 }
 
 export interface Addons {
@@ -17,6 +18,7 @@ export interface Addons {
 	maptiler?: {
 		apikey: string;
 	};
+	fullscreen?: boolean;
 }
 
 export interface Dashboard {

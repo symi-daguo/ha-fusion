@@ -3,17 +3,17 @@ hide_views: false
 hide_sidebar: false
 sidebarWidth: 391
 views:
-  - name: Hemma
+  - name: 主页
     id: 6467602449648
     sections:
       - type: horizontal-stack
         id: 5078078976670
         sections:
-          - name: Test
+          - name: 测试
             id: 2171067078835
             items:
               - type: button
-                entity_id: light.studio_dator
+                entity_id: light.wled_soundreactive
                 id: 5008685947164
               - type: button
                 entity_id: light.vardagsrum
@@ -31,7 +31,7 @@ views:
               - type: button
                 id: 3728122340522
                 entity_id: switch.deltaco_sh_p01_socket
-          - name: Studio
+          - name: 工作室
             id: 9828119797472
             items:
               - type: button
@@ -47,7 +47,7 @@ views:
       - type: horizontal-stack
         id: 4240433563768
         sections:
-          - name: Media
+          - name: 媒体
             id: 7859955675791
             items:
               - type: media
@@ -62,7 +62,7 @@ views:
                   - entity_id: media_player.spotify
                     icon: mdi:spotify
                   - entity_id: media_player.kok
-          - name: Övrigt
+          - name: 其他
             items:
               - type: button
                 id: 4326750373921
@@ -98,7 +98,7 @@ views:
                 entity_id: media_player.samsung
                 id: 1503994513807
             id: 7274165372538
-      - name: Hemma
+      - name: 家庭
         items:
           - type: button
             id: 5560216674913
@@ -116,11 +116,11 @@ views:
             entity_id: script.home_arrive
             icon: material-symbols:home-rounded
         id: 1412018494330
-  - name: Entities
+  - name: 实体
     icon: material-symbols:filter-list-rounded
     id: 5813909951190
     sections:
-      - name: Test
+      - name: 测试
         items:
           - type: button
             id: 3188058166584

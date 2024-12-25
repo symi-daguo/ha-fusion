@@ -1,7 +1,15 @@
 {
 	"name": "ha-fusion",
-	"version": "2024.10.0",
+	"version": "2024.12.5",
 	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/symi-daguo/ha-fusion.git"
+	},
+	"author": {
+		"name": "symi-daguo",
+		"url": "https://github.com/symi-daguo"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",

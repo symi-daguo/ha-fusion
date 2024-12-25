@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { lang, youtubeAddon } from '$lib/Stores';
+	import { lang, youtubeAddon, fullscreenEnabled } from '$lib/Stores';
 	import { openModal } from 'svelte-modals';
 	import Toggle from '$lib/Components/Toggle.svelte';
 
@@ -10,7 +10,17 @@
 		target.type = event.type === 'focus' ? 'text' : 'password';
 	}
 
-	const href = 'https://github.com/matt8707/ha-fusion/blob/main/static/documentation/Map.md';
+	const href = 'https://github.com/symi-daguo/ha-fusion/blob/main/static/documentation/Map.md';
+
+	function toggleFullscreen() {
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+			$fullscreenEnabled = true;
+		} else {
+			document.exitFullscreen();
+			$fullscreenEnabled = false;
+		}
+	}
 </script>
 
 <h2>{$lang('addons')}</h2>
@@ -36,18 +46,16 @@
 	</div>
 
 	<div class="item">
-		<h3>YouTube</h3>
+		<h3>全屏</h3>
 		<div class="button-toggle-container">
 			<button
-				on:click={() => {
-					openModal(() => import('$lib/Modal/YoutubeModal.svelte'), {});
-				}}
+				on:click={toggleFullscreen}
 				>{$lang('configure')}
 			</button>
 
 			<div class="toggle">
-				<input type="hidden" bind:value={$youtubeAddon} name="youtube" />
-				<Toggle bind:checked={$youtubeAddon} />
+				<input type="hidden" bind:value={$fullscreenEnabled} name="fullscreen" />
+				<Toggle bind:checked={$fullscreenEnabled} on:change={toggleFullscreen} />
 			</div>
 		</div>
 	</div>
