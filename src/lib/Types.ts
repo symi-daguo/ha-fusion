@@ -21,7 +21,7 @@ export interface Addons {
 
 export interface Dashboard {
 	views: Views[];
-	sidebar: SidebarItem[];
+	sidebar?: SidebarItem[];
 	theme?: string;
 	hide_views?: boolean;
 	hide_sidebar?: boolean;
@@ -29,7 +29,7 @@ export interface Dashboard {
 }
 
 export interface Views {
-	id?: number;
+	id?: string;
 	name?: string;
 	icon?: string;
 	sections?: Section[];
@@ -64,6 +64,7 @@ export interface Condition {
 
 export interface Translations {
 	[key: string]: string;
+	_default?: Translations;
 }
 
 // dashboard.yaml

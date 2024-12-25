@@ -12,7 +12,7 @@ import {
 } from 'home-assistant-js-websocket';
 import type { Auth, AuthData } from 'home-assistant-js-websocket';
 import { states, connection, config, connected, event, persistentNotifications } from '$lib/Stores';
-import { openModal, closeModal } from 'svelte-modals';
+import { openModal } from 'svelte-modals';
 import type { Configuration, PersistentNotification } from '$lib/Types';
 
 const options = {
@@ -41,37 +41,52 @@ export async function authentication(configuration: Configuration) {
 	let auth: Auth | undefined;
 
 	try {
-		// long lived access token
+		// 从 localStorage 获取令牌
+		const savedTokens = await options.loadTokens();
+		
+		// 如果有长期访问令牌
 		if (configuration?.token) {
 			auth = createLongLivedTokenAuth(configuration?.hassUrl, configuration?.token);
 
-			// companion app and ingress causes issues with auth redirect
-			// open special modal to enter long lived access token
+		// 如果是 Home Assistant Companion App
 		} else if (navigator.userAgent.includes('Home Assistant')) {
 			openModal(() => import('$lib/Components/TokenModal.svelte'));
 			return;
 
-			// default auth flow
+		// 如果有保存的令牌
+		} else if (savedTokens) {
+			try {
+				auth = await getAuth({ ...options, hassUrl: configuration?.hassUrl });
+				if (auth.expired) {
+					await auth.refreshAccessToken();
+				}
+			} catch (error) {
+				console.error('Failed to use saved tokens:', error);
+				options.clearTokens();
+				window.location.reload();
+				return;
+			}
+
+		// 默认认证流程
 		} else {
 			auth = await getAuth({ ...options, hassUrl: configuration?.hassUrl });
-			if (auth.expired) auth.refreshAccessToken();
 		}
 
-		// connection
+		// 创建连接
 		const conn = await createConnection({ auth });
 		connection.set(conn);
 
-		// states
+		// 订阅状态
 		subscribeEntities(conn, (hassEntities) => {
 			states.set(hassEntities);
 		});
 
-		// config
+		// 订阅配置
 		subscribeConfig(conn, (hassConfig) => {
 			config.set(hassConfig);
 		});
 
-		// events
+		// 事件监听
 		conn.addEventListener('ready', () => {
 			console.debug('connected.');
 			connected.set(true);
@@ -85,14 +100,16 @@ export async function authentication(configuration: Configuration) {
 		conn.addEventListener('reconnect-error', () => {
 			console.error('ERR_INVALID_AUTH.');
 			connected.set(false);
+			options.clearTokens();
+			window.location.reload();
 		});
 
-		// clear auth query string
+		// 清除认证查询字符串
 		if (location.search.includes('auth_callback=1')) {
 			history.replaceState(null, '', location.pathname);
 		}
 
-		// custom events
+		// 自定义事件
 		conn?.subscribeMessage(
 			(message: any) => {
 				const trigger = message?.variables?.trigger?.event?.data?.event;
@@ -100,7 +117,6 @@ export async function authentication(configuration: Configuration) {
 				// close_popup
 				if (trigger === 'close_popup') {
 					event.set('close_popup');
-					closeModal();
 				}
 
 				// refresh
@@ -118,7 +134,7 @@ export async function authentication(configuration: Configuration) {
 			}
 		);
 
-		// notifications
+		// 通知
 		conn?.subscribeMessage(
 			(data: {
 				type: 'added' | 'removed' | 'current' | 'updated';
@@ -160,6 +176,7 @@ function handleError(_error: unknown) {
 		case ERR_INVALID_AUTH:
 			console.error('ERR_INVALID_AUTH');
 			options.clearTokens();
+			window.location.reload();
 			break;
 		case ERR_CANNOT_CONNECT:
 			console.error('ERR_CANNOT_CONNECT');

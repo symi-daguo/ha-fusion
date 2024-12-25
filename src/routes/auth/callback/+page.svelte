@@ -1,11 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { initConnection } from '$lib/Stores';
+	import { configuration } from '$lib/Stores';
+	import { authentication } from '$lib/Socket';
 
-	async function getAccessToken(code: string, clientId: string, redirectUri: string) {
+	onMount(async () => {
+		const params = new URLSearchParams(window.location.search);
+		const code = params.get('code');
+		const state = params.get('state');
+
+		if (!code) {
+			console.error('No code found in URL');
+			window.location.href = `${base}/`;
+			return;
+		}
+
 		try {
-			const response = await fetch(`/auth/token`, {
+			const hassUrl = $configuration?.hassUrl || import.meta.env.VITE_HASS_URL;
+			const clientId = new URL(hassUrl).origin + base + '/';
+			const redirectUri = new URL(hassUrl).origin + base + '/auth/callback';
+
+			const response = await fetch(`${hassUrl}/auth/token`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
@@ -15,81 +30,71 @@
 					code,
 					client_id: clientId,
 					redirect_uri: redirectUri
-				})
+				}).toString()
 			});
 
 			if (!response.ok) {
-				throw new Error('Failed to get access token');
+				throw new Error(`Failed to get token: ${response.statusText}`);
 			}
 
-			return await response.json();
+			const data = await response.json();
+			const tokens = {
+				access_token: data.access_token,
+				expires: Date.now() + data.expires_in * 1000,
+				refresh_token: data.refresh_token,
+				hassUrl: hassUrl
+			};
+
+			// 保存令牌
+			localStorage.hassTokens = JSON.stringify(tokens);
+
+			// 更新配置
+			$configuration = {
+				...$configuration,
+				hassUrl: hassUrl
+			};
+
+			// 初始化认证
+			await authentication($configuration);
+
+			// 重定向回原始页面
+			let returnTo = '/';
+			if (state) {
+				try {
+					const stateData = JSON.parse(decodeURIComponent(state));
+					if (stateData.return_to) {
+						returnTo = stateData.return_to;
+					}
+				} catch (e) {
+					console.error('Failed to parse state:', e);
+				}
+			}
+
+			window.location.href = `${new URL(hassUrl).origin}${base}${returnTo}`;
 		} catch (error) {
-			console.error('Error getting access token:', error);
-			throw error;
-		}
-	}
-
-	onMount(async () => {
-		const urlParams = new URLSearchParams(window.location.search);
-		const code = urlParams.get('code');
-		const state = urlParams.get('state');
-
-		if (code && state) {
-			try {
-				const stateData = JSON.parse(decodeURIComponent(state));
-				const { return_to = '/' } = stateData;
-
-				// 获取访问令牌
-				const redirectUri = `${window.location.origin}${base}/auth/callback`;
-				const clientId = `${window.location.origin}${base}/`;
-				
-				const tokenData = await getAccessToken(code, clientId, redirectUri);
-				
-				// 保存令牌信息
-				localStorage.setItem('hassTokens', JSON.stringify({
-					access_token: tokenData.access_token,
-					expires_in: tokenData.expires_in,
-					refresh_token: tokenData.refresh_token,
-					token_type: tokenData.token_type,
-					timestamp: Date.now()
-				}));
-
-				// 初始化连接
-				await initConnection();
-
-				// 重定向回原页面
-				window.location.href = `${base}${return_to}`;
-			} catch (e) {
-				console.error('Failed to process authentication:', e);
-				window.location.href = `${base}/`;
-			}
-		} else {
+			console.error('Failed to authenticate:', error);
+			// 清除无效的令牌
+			localStorage.removeItem('hassTokens');
 			window.location.href = `${base}/`;
 		}
 	});
 </script>
 
 <div class="container">
-	<h1>授权处理中...</h1>
-	<p>请稍候，正在完成授权流程</p>
+	<h1>Authenticating...</h1>
 </div>
 
 <style>
 	.container {
 		display: flex;
-		flex-direction: column;
-		align-items: center;
 		justify-content: center;
+		align-items: center;
 		height: 100vh;
-		text-align: center;
-		color: white;
+		width: 100vw;
 	}
 
 	h1 {
-		margin-bottom: 1rem;
-	}
-
-	p {
-		opacity: 0.8;
+		font-size: 1.5rem;
+		color: var(--theme-text-color);
 	}
 </style> 

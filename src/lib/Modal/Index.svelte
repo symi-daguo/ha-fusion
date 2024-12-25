@@ -248,49 +248,51 @@
 		padding: 1.6rem 1.9rem 1.9rem 1.9rem;
 		background-color: var(--theme-modal-background-color-modal);
 		display: block;
-		flex-direction: column;
 		pointer-events: auto;
-		max-height: 85vh;
-		max-width: 85vw;
-		border-radius: 1.2rem;
 		position: relative;
-		box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-		outline: 1px solid rgba(255, 255, 255, 0.25);
+		border-radius: 1rem;
+		max-height: 90vh;
 		overflow-y: auto;
+		overflow-x: hidden;
+		box-shadow: var(--theme-box-shadow);
+		touch-action: none;
+	}
+
+	h1 {
+		font-size: 1.4rem;
+		font-weight: 500;
+		margin: 0;
+		padding: 0;
+		color: var(--theme-text-color);
 	}
 
 	button {
-		width: 1.85rem;
-		background: none;
-		color: inherit;
-		cursor: pointer;
-		margin: 0.06rem -0.25rem 0 0;
-		padding: 0;
-		border: none;
-		border-radius: 50%;
-	}
-
-	button:focus {
-		color: inherit;
-	}
-
-	.buttons {
 		display: flex;
-		justify-content: flex-end;
-		gap: 1rem;
-		margin-top: 2rem;
-	}
-
-	.action {
-		padding: 0.7rem 1.5rem;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
 		border-radius: 0.5rem;
-		font-weight: 500;
-		width: auto;
-		min-width: 80px;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+		color: var(--theme-text-color);
+		margin-left: 1rem;
 	}
 
-	.save {
-		background-color: var(--primary-color);
-		color: white;
+	button:hover {
+		background-color: var(--theme-hover-color);
+	}
+
+	:global(.dark) .warning {
+		background-color: rgb(38 39 38) !important;
+	}
+
+	@media (max-width: 768px) {
+		.contents {
+			width: 100vw !important;
+			height: 100%;
+			border-radius: 0;
+			max-height: none;
+		}
 	}
 </style>

@@ -103,6 +103,11 @@
 	 * using the correct service call...
 	 */
 	function toggle() {
+		if (!$connection) {
+			console.error('No connection available');
+			return;
+		}
+
 		// if service template
 		if (sel?.template?.service && template?.service?.output) {
 			try {

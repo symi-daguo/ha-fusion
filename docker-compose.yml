@@ -1,14 +1,13 @@
-version: '3'
-
 services:
   ha-fusion:
-    image: ghcr.io/symi-daguo/ha-fusion:latest
     container_name: ha-fusion
-    ports:
-      - "5050:5050"
+    image: ghcr.io/symi-daguo/ha-fusion:latest
     volumes:
       - ./data:/app/data
+    network_mode: bridge
+    ports:
+      - 5050:5050
     environment:
-      - TZ=Asia/Shanghai
-      - HASS_URL=http://localhost:8123
+      TZ: Asia/Shanghai
+      HASS_URL: http://localhost:8123
     restart: always
